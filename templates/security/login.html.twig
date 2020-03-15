@@ -1,0 +1,47 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <form class="login-form" method="post">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+                    {% for message in app.flashes('danger') %}
+                        <div class="alert alert-danger">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('warning') %}
+                        <div class="alert alert-warning">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('info') %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+
+        <h1 class="h3 mb-3 font-weight-normal"><i>Your Name</i></h1>
+        <label for="inputEmail" class="sr-only">Adresse mail</label>
+        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Adresse mail" required autofocus>
+        <label for="inputPassword" class="sr-only">Mot de passe</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Mot de passe" required>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Se souvenir de moi.
+            </label>
+        </div>
+
+        <button class="btn btn-lg btn-primary" type="submit">Connexion</button>
+        
+        {# <div class="forgot">
+            <a href="{{ path('app_forget') }}">Mot de passe oublié</a>
+        </div> #}
+
+    </form>
+{% endblock %}

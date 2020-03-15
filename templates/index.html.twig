@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <title>Your Title</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+        {% block js_before %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+<body>
+    <div class="container">
+        <div class="login-form">
+            <img id="logo" src="{{ asset('build/img/BB_White.png') }}" style="vertical-align:sub;" />
+            <div class="main-div">
+
+                {% block body %}{% endblock %}
+
+            </div>
+
+        </div>
+    </div>
+
+    {% block js_after %}
+        {{ encore_entry_script_tags('doc_ready') }}
+    {% endblock %}
+    </body>
+</html>
