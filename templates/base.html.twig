@@ -17,9 +17,6 @@
     {% endif %}
     {% if sidemenu is defined %}
         <div class="sidemenu">
-        {% if filter_widget is defined %}
-            {{ filter_widget | raw }}
-        {% endif %}
         {{ sidemenu | raw }}
         </div>
     {% endif %}
@@ -28,10 +25,6 @@
         {% block body %}
         {% endblock %}
     </div>
-
-    {% if filter_widget is defined %}
-        {{ filter_form | raw }}
-    {% endif %}
 
     <div class="pageFooterContainer fixed-bottom">
         <div class="card">

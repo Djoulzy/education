@@ -12,7 +12,8 @@ import '../css/app.scss';
 global.$ = global.jQuery = $;
 
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
+import 'bootstrap-toggle/js/bootstrap-toggle.min.js';
+import '@fortawesome/fontawesome-free/js/all';
 import './theme_init.js';
 
 console.log('APP: Bootstrap & JQuery Loaded');

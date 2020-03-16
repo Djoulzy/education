@@ -1,5 +1,9 @@
 // @import "~bootstrap/scss/bootstrap";
 @import 'bootstrap.css'; /* https://bootswatch.com/slate/ */
+@import '~bootstrap-toggle/css/bootstrap-toggle.min.css';
+@import '~@fortawesome/fontawesome-free/css/all.min.css';
+@import 'theme_switcher.css';
+@import 'sidemenu.css';
 
 body#LoginForm {
   // background-image:url("/build/images/ui/blur.png");

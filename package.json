@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.1",
     "bootstrap": "^4.4.1",
+    "bootstrap-toggle": "^2.2.2",
     "jquery": "^3.4.1",
     "popper.js": "^1.16.1"
   },

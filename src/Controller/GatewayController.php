@@ -34,7 +34,7 @@ class GatewayController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $options = array(
-            'controller_name' => 'BOGatewayController',
+            'controller_name' => 'GatewayController',
             'topmenu' => $this->menu->renderTopMenu('build/data/menus/home.ini'),
         );
 
