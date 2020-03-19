@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GatewayController!{% endblock %}
+    
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+{% block body %}
+    <br/>
+
+    <div class="container" style="clear: both;">
+    <div class="card">
+        <div class="card-header">Verbes Irréguliers niv. {{ niveau }}</div>
+        <div class="card-body">
+            <div class="row">
+                <div id="question" class="col-12 text-center question">{{ note }} / 20</div>
+            </div>
+            <table class="table">
+                {% for verbe in verbes %}
+                    <tr><td rowspan="2">{{ loop.index }}</td>
+                        <td rowspan="2">{{ verbe.fr }}</td>
+                        <td>{{ verbe.infinitif }}</td>
+                        <td>{{ verbe.form1 }}</td>
+                        <td>{{ verbe.form2 }}</td>
+                    </tr>
+                    <tr>
+                        <td {% if reponses[loop.index].inf != verbe.infinitif %} style="color:red;" {% endif %}>{{ reponses[loop.index].inf }}</td>
+                        <td {% if reponses[loop.index].pret != verbe.form1 %} style="color:red;" {% endif %}>{{ reponses[loop.index].pret }}</td>
+                        <td {% if reponses[loop.index].ps != verbe.form2 %} style="color:red;" {% endif %}>{{ reponses[loop.index].ps }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

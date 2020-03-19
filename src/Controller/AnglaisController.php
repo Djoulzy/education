@@ -33,6 +33,14 @@ class AnglaisController extends GatewayController
     public function verbes(int $niveau)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        // $i = 0;
+        // while ($i<10) {
+        //     $rand = rand(0, 12);
+        //     if (isset($tmp[$rand])) continue;
+        //     $tmp[$rand] = $rand;
+        //     $i++;
+        // }
+        // dump($tmp);
 
         $options = array(
             'controller_name' => 'AnglaisController',
@@ -54,7 +62,7 @@ class AnglaisController extends GatewayController
         $game = $this->session->get($game_name);
 
         $step = $this->request->get('step');
-        jlog(var_export($this->request->get('inf'), true));
+        jlog(var_export($step, true));
         if ($step == null) {
             if (!isset($game['step'])) {
                 $this->queryManager->setCatalog('build/data/anglais.ini');
@@ -71,18 +79,23 @@ class AnglaisController extends GatewayController
                 $game['verbes'] = $this->queryManager->execRawQuery('getSelectedVerbes', array('verbes_liste' => $verbes_liste));
                 $game['step'] = 1;
                 $game['reponses'] = array();
-                $game['result'] = array();
+                $game['results'] = array();
+                $game['points'] = 30;
         
                 $this->session->set($game_name, $game);
             }
+            if ($game['step'] < 10) $verbe = $game['verbes'][$game['step']-1];
+            else $verbe = $game['verbes'][9];
             $options = array(
                 'controller_name' => 'AnglaisController',
                 'topmenu' => $this->menu->renderTopMenu('build/data/menus/home.ini'),
                 'sidemenu' => $this->menu->renderSideMenu('build/data/menus/ss_anglais.ini'),
                 'link' => 'langues/anglais/verbes/'.$niveau.'/run',
+                'redirect' => '/langues/anglais/verbes/'.$niveau.'/correction',
                 'step' => $game['step'],
                 'niveau' => $niveau,
-                'verbe' => $game['verbes'][$game['step']-1]
+                'verbe' => $verbe,
+                'results' => json_encode($game['results'])
             );
     
             return $this->render('anglais/run.html.twig', $options);
@@ -93,13 +106,20 @@ class AnglaisController extends GatewayController
             $game['reponses'][$game['step']]['ps'] = $this->request->get('ps');
 
             $result = true;
-            if ($game['verbes'][$game['step']-1]['infinitif'] !== $this->request->get('inf')) $result = false;
-            if ($game['verbes'][$game['step']-1]['form1'] !== $this->request->get('pret')) $result = false;
-            if ($game['verbes'][$game['step']-1]['form2'] !== $this->request->get('ps')) $result = false;
+            if ($game['verbes'][$game['step']-1]['infinitif'] !== $this->request->get('inf')) { $result = false; $game['points']--; }
+            if ($game['verbes'][$game['step']-1]['form1'] !== $this->request->get('pret')) { $result = false; $game['points']--; }
+            if ($game['verbes'][$game['step']-1]['form2'] !== $this->request->get('ps')) { $result = false; $game['points']--; }
+            $game['results'][$game['step']] = $result;
 
             $game['step'] += 1;
-            $tmp = array('verbe' => $game['verbes'][$game['step']-1], 'step' => $game['step']);
             $this->session->set($game_name, $game);
+
+            if ($game['step'] > 10) {
+                // $this->saveContext();
+                $tmp = array('verbe' => $game['verbes'][9], 'step' => $game['step'], 'results' => $game['results']);
+            }
+            else
+                $tmp = array('verbe' => $game['verbes'][$game['step']-1], 'step' => $game['step'], 'results' => $game['results']);
 
             $response = new Response(json_encode($tmp));
             $response->headers->set('Content-Type', 'application/json');
@@ -107,4 +127,25 @@ class AnglaisController extends GatewayController
         }
     }
 
+    /**
+     * @Route("/anglais/verbes/{niveau}/correction", methods={"GET"}, name="anglais_correct")
+     */
+    public function correction(int $niveau)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $game_name = 'anglais_'.$niveau;
+        $game = $this->session->get($game_name);
+
+        $options = array(
+            'controller_name' => 'AnglaisController',
+            'topmenu' => $this->menu->renderTopMenu('build/data/menus/home.ini'),
+            'sidemenu' => $this->menu->renderSideMenu('build/data/menus/ss_anglais.ini'),
+            'niveau' => $niveau,
+            'verbes' => $game['verbes'],
+            'reponses' => $game['reponses'],
+            'note' => ($game['points']/3)*2
+        );
+
+        return $this->render('anglais/correction.html.twig', $options);
+    }
 }

@@ -20,7 +20,7 @@
     position: relative;
     text-align: center;
     text-transform: uppercase;
-    color: #7d7d7d;
+    color: #636262;
 }
 
 .progressbar li:before {
@@ -29,7 +29,7 @@
     content: counter(step);
     counter-increment: step;
     line-height: 30px;
-    border: 6px solid #7d7d7d; /* Epaisseur cercle */
+    border: 6px solid #636262; /* Epaisseur cercle */
     display: block;
     text-align: center;
     margin: 0 auto 10px auto;
@@ -42,7 +42,7 @@
     height: 6px; /* Epaisseur ligne */
     content: '';
     position: absolute;
-    background-color: #7d7d7d;
+    background-color: #636262; /* #7d7d7d; */
     top: 18px;
     left: -50%;
     z-index: -1;
@@ -53,13 +53,37 @@
 }
 
 .progressbar li.active {
+    color: #9b9b9b;
+}
+
+.progressbar li.active_ok {
     color: green;
 }
 
+.progressbar li.active_nok {
+    color: red;
+}
+
 .progressbar li.active:before {
+    border-color: #9b9b9b;
+}
+
+.progressbar li.active_ok:before {
     border-color: #55b776;
 }
 
+.progressbar li.active_nok:before {
+    border-color: red;
+}
+
 .progressbar li.active + li:after {
+    background-color: #9b9b9b;
+}
+
+.progressbar li.active_ok + li:after {
     background-color: #55b776;
+}
+
+.progressbar li.active_nok + li:after {
+    background-color: red;
 }

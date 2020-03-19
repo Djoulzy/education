@@ -11,16 +11,16 @@
     <br/>
     <div class="progress_container">
         <ul class="progressbar">
-            <li id="prog_1" class="active">?</li>
-            <li id="prog_2">?</li>
-            <li id="prog_3">?</li>
-            <li id="prog_4">?</li>
-            <li id="prog_5">?</li>
-            <li id="prog_6">?</li>
-            <li id="prog_7">?</li>
-            <li id="prog_8">?</li>
-            <li id="prog_9">?</li>
-            <li id="prog_10">?</li>
+            <li id="prog_1" class="active"><i class="fas fa-arrow-up"></i></li>
+            <li id="prog_2"><i class="fas fa-question" style="font-size: 20px;"></i></li>
+            <li id="prog_3"><i class="fas fa-question" style="font-size: 20px;"></i></li>
+            <li id="prog_4"><i class="fas fa-question" style="font-size: 20px;"></i></li>
+            <li id="prog_5"><i class="fas fa-question" style="font-size: 20px;"></i></li>
+            <li id="prog_6"><i class="fas fa-question" style="font-size: 20px;"></i></li>
+            <li id="prog_7"><i class="fas fa-question" style="font-size: 20px;"></i></li>
+            <li id="prog_8"><i class="fas fa-question" style="font-size: 20px;"></i></li>
+            <li id="prog_9"><i class="fas fa-question" style="font-size: 20px;"></i></li>
+            <li id="prog_10"><i class="fas fa-question" style="font-size: 20px;"></i></li>
         </ul>
     </div>
 
@@ -32,9 +32,9 @@
                 <div id="question" class="col-12 text-center question">{{ verbe['fr'] }}</div>
             </div>
             <div class="row">
-                <div class="col-4 quest_input text-center">Infinitif<br/><input id="inf" type="text" value="" /></div>
-                <div class="col-4 quest_input text-center">Preterit<br/><input id="pret" type="text" value="" /></div>
-                <div class="col-4 quest_input text-center">Passé Simple<br/><input id="ps" type="text" value="" /></div>
+                <div class="col-4 quest_input text-center">Infinitif<br/><input id="inf" class="reponses" type="text" value="" /></div>
+                <div class="col-4 quest_input text-center">Preterit<br/><input id="pret" class="reponses" type="text" value="" /></div>
+                <div class="col-4 quest_input text-center">Passé Simple<br/><input id="ps" class="reponses" type="text" value="" /></div>
             </div>
             <div class="row">
                 <div id="question" class="col-12 text-center">
@@ -43,7 +43,7 @@
             </div>
             <div class="row">
                 <div id="question" class="col-12 text-center">
-                    <button id="next" class="btn btn-primary" type="button">Suivant</button>
+                    <button id="next" class="btn btn-danger" type="button">Remplir chaque champ</button>
                 </div>
             </div>
         </div>
@@ -54,27 +54,81 @@
 	$(document).ready(function()
 	{
         var step = {{ step }}
+        var results = JSON.parse('{{ results|raw }}')
+        var submit_ok = false
+        console.log(step)
 
-        function setProgress(step) {
-            for(var i=1; i<= step; i++)
-                $("#prog_"+i).addClass("active")
+        function init() {
+            submit_ok = false
+            $("#inf").val(''),
+            $("#pret").val(''),
+            $("#ps").val('')
+            $("#next").addClass("btn-danger")
+            $("#next").html("Remplir chaque champ")
         }
 
-        $("#next").click(function() {
-            var postval = {
-                'step': step,
-                'inf': $("#inf").val(),
+        function setProgress() {
+            init()
+            for(var i=1; i< step; i++) {
+                if(results[i] == true) {
+                    $("#prog_"+i).addClass("active_ok")
+                    $("#prog_"+i).html('<i class="fas fa-check" style="font-size: 20px;"></i>')
+                }
+                else if(results[i] == false) {
+                    $("#prog_"+i).addClass("active_nok")
+                    $("#prog_"+i).html('<i class="fas fa-times" style="font-size: 20px;"></i>')
+                }
             }
 
-            $.when(ajaxDataLoader('{{ link }}', 'json', 'POST', postval)).done(function(data) {
-                console.log(data)
-                $("#question").html(data.verbe.fr)
-                step = data.step
-                setProgress(step)
+            $("#prog_"+step).addClass("active")
+            $("#prog_"+step).html('<i class="fas fa-arrow-up" style="font-size: 20px;"></i>')
+
+            if (step > 10) {
+                submit_ok = true
+                $("#next").removeClass("btn-danger")
+                $("#next").addClass("btn-info")
+                $("#next").html("Terminé ! Voir la correction ...")
+            }
+        }
+
+        $(".reponses").on('change', function() {
+            submit_ok = true
+            $(".reponses").each(function() {
+                if ($(this).val() == '') submit_ok = false
             })
+            if (submit_ok) {
+                $("#next").removeClass("btn-danger")
+                $("#next").addClass("btn-success")
+                $("#next").html("Suivant")
+            }
         })
 
-        setProgress(step)
+        $("#next").click(function() {
+            if (!submit_ok) return
+
+            if (step > 10) {
+                window.location.href = "{{ redirect }}"
+            }
+            else {
+                var postval = {
+                    'step': step,
+                    'inf': $("#inf").val(),
+                    'pret': $("#pret").val(),
+                    'ps': $("#ps").val()
+                }
+
+                $.when(ajaxDataLoader('{{ link }}', 'json', 'POST', postval)).done(function(data) {
+                    console.log(data)
+                    $("#question").html(data.verbe.fr)
+                    step = data.step
+                    results = data.results
+
+                    setProgress()
+                })
+            }
+        })
+
+        setProgress()
     })
 </script>
 
