@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GatewayController!{% endblock %}
+    
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+{% block body %}
+    <br/>
+    <br/>
+
+    <div class="container"  style="clear: both;">
+        <div class="card">
+            <div class="card-header">Question</div>
+            <div class="card-body">
+                <a id="next" class="btn btn-primary" href="{{ link }}" role="button">Commencer</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

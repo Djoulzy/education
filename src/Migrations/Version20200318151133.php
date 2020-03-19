@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200315180214 extends AbstractMigration
+final class Version20200318151133 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,6 +22,7 @@ final class Version20200315180214 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
+        $this->addSql('CREATE TABLE verbe (id SERIAL NOT NULL, lang VARCHAR(2) NOT NULL, fr VARCHAR(50) NOT NULL, infinitif VARCHAR(50) NOT NULL, form1 VARCHAR(50) DEFAULT NULL, form2 VARCHAR(50) DEFAULT NULL, level INT DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE logs (id SERIAL NOT NULL, username VARCHAR(180) NOT NULL, user_id INT NOT NULL, last_login TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, ip VARCHAR(15) NOT NULL, success BOOLEAN NOT NULL, reason VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
     }
 
@@ -31,6 +32,7 @@ final class Version20200315180214 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('CREATE SCHEMA public');
+        $this->addSql('DROP TABLE verbe');
         $this->addSql('DROP TABLE logs');
     }
 }

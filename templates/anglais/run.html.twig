@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GatewayController!{% endblock %}
+    
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+{% block body %}
+    <br/>
+    <br/>
+    <div class="progress_container">
+        <ul class="progressbar">
+            <li id="prog_1" class="active">?</li>
+            <li id="prog_2">?</li>
+            <li id="prog_3">?</li>
+            <li id="prog_4">?</li>
+            <li id="prog_5">?</li>
+            <li id="prog_6">?</li>
+            <li id="prog_7">?</li>
+            <li id="prog_8">?</li>
+            <li id="prog_9">?</li>
+            <li id="prog_10">?</li>
+        </ul>
+    </div>
+
+    <div class="container" style="clear: both;">
+    <div class="card">
+        <div class="card-header">Verbes Irréguliers niv. {{ niveau }}</div>
+        <div class="card-body">
+            <div class="row">
+                <div id="question" class="col-12 text-center question">{{ verbe['fr'] }}</div>
+            </div>
+            <div class="row">
+                <div class="col-4 quest_input text-center">Infinitif<br/><input id="inf" type="text" value="" /></div>
+                <div class="col-4 quest_input text-center">Preterit<br/><input id="pret" type="text" value="" /></div>
+                <div class="col-4 quest_input text-center">Passé Simple<br/><input id="ps" type="text" value="" /></div>
+            </div>
+            <div class="row">
+                <div id="question" class="col-12 text-center">
+                    <br/><br/>
+                </div>
+            </div>
+            <div class="row">
+                <div id="question" class="col-12 text-center">
+                    <button id="next" class="btn btn-primary" type="button">Suivant</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+<script>
+	$(document).ready(function()
+	{
+        var step = {{ step }}
+
+        function setProgress(step) {
+            for(var i=1; i<= step; i++)
+                $("#prog_"+i).addClass("active")
+        }
+
+        $("#next").click(function() {
+            var postval = {
+                'step': step,
+                'inf': $("#inf").val(),
+            }
+
+            $.when(ajaxDataLoader('{{ link }}', 'json', 'POST', postval)).done(function(data) {
+                console.log(data)
+                $("#question").html(data.verbe.fr)
+                step = data.step
+                setProgress(step)
+            })
+        })
+
+        setProgress(step)
+    })
+</script>
+
+{% endblock %}

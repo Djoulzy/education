@@ -6,6 +6,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 require dirname(__DIR__).'/config/bootstrap.php';
 
+function jlog($mess) {
+    $fd = fopen("../var/log/jules.log", "a");
+    if (!fwrite($fd, $mess."\n"))
+    fclose($fd);
+}
+
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
 

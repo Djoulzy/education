@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use App\Service\CheckPermissions;
 use App\Service\BSMenuGenerator;
+use App\Service\QueryManager;
 
 class GatewayController extends AbstractController
 {
@@ -17,13 +18,15 @@ class GatewayController extends AbstractController
     protected $request;
     protected $session;
     protected $menu;
+    protected $queryManager;
 
-    public function __construct(CheckPermissions $perms, RequestStack $request, SessionInterface $session, BSMenuGenerator $menu)
+    public function __construct(CheckPermissions $perms, RequestStack $request, SessionInterface $session, BSMenuGenerator $menu, QueryManager $queryManager)
     {
         $this->perms = $perms;
         $this->request = $request->getCurrentRequest();
         $this->session = $session;
         $this->menu = $menu;
+        $this->queryManager = $queryManager;
     }
 
     /**

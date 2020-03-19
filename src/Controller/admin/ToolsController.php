@@ -14,7 +14,7 @@ use App\Service\BSMenuGenerator;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * @Route("/app/admin/tools")
+ * @Route("/admin/tools")
  */
 class ToolsController extends AbstractController
 {
@@ -33,7 +33,7 @@ class ToolsController extends AbstractController
     public function reset()
     {
         $this->session->invalidate();
-        return $this->redirectToRoute('user_login');
+        return $this->redirectToRoute('app_login');
     }
 
     /**
@@ -44,7 +44,7 @@ class ToolsController extends AbstractController
         $data = $this->session->get('filters');
         return $this->render('admin/tools/index.html.twig', [
             'data' => $data,
-            'topmenu' => $this->menu->renderTopMenu('build/data/menu.ini')
+            'topmenu' => $this->menu->renderTopMenu('build/data/menus/home.ini')
         ]);
     }
 }

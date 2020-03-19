@@ -5,10 +5,10 @@
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <title>Your Title</title>
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+            {{ encore_entry_link_tags('login') }}
         {% endblock %}
         {% block js_before %}
-            {{ encore_entry_script_tags('app') }}
+            {{ encore_entry_script_tags('login') }}
         {% endblock %}
     </head>
 <body>
@@ -23,9 +23,5 @@
 
         </div>
     </div>
-
-    {% block js_after %}
-        {{ encore_entry_script_tags('doc_ready') }}
-    {% endblock %}
     </body>
 </html>

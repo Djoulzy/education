@@ -16,4 +16,6 @@ import 'bootstrap-toggle/js/bootstrap-toggle.min.js';
 import '@fortawesome/fontawesome-free/js/all';
 import './theme_init.js';
 
+import './ajaxLoader.js';
+
 console.log('APP: Bootstrap & JQuery Loaded');

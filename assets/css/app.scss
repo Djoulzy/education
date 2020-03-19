@@ -4,96 +4,63 @@
 @import '~@fortawesome/fontawesome-free/css/all.min.css';
 @import 'theme_switcher.css';
 @import 'sidemenu.css';
+@import 'step_progress.css';
 
-body#LoginForm {
-  // background-image:url("/build/images/ui/blur.png");
-  background-repeat:no-repeat;
-  // background-position:center;
-  // background-size:cover;
-  padding:10px;
-}
-
-.form-heading { color:#fff; font-size:23px;}
-.panel h2{ color:#444444; font-size:18px; margin:0 0 8px 0;}
-.panel p { color:#777777; font-size:14px; margin-bottom:30px; line-height:24px;}
-
+html ,
 body {
-  background: var(--dark);
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-#logo {
-  filter: drop-shadow(10px 10px 4px #000000);
-  margin: 30px auto 30px;
+div#brand {
+    background: var(--brand);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100px;
+    height: 30px;
+    padding: 0;
 }
 
-.login-form .form-control {
-  background: #f7f7f7 none repeat scroll 0 0;
-  border: 1px solid #d4d4d4;
-  border-radius: 10px;
-  font-size: 14px;
-  height: 50px;
-  line-height: 50px;
-  margin-top: 10px;
+div#Blackbee {
+    background: var(--blackbee);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 70px;
+    height: 20px;
+    padding: 0;
 }
 
-.register-form .form-control {
-  background: #f7f7f7 none repeat scroll 0 0;
-  border: 1px solid #d4d4d4;
-  border-radius: 4px;
-  font-size: 14px;
-  height: 50px;
-  line-height: 50px;
+.pageContainer {
+    position: absolute;
+    padding: 0 10px 75px 260px;
+    width: 100%;
 }
 
-.main-div {
-  background: #ffffff none repeat scroll 0 0;
-  border-radius: 10px;
-  margin: 10px auto 30px;
-  max-width: 38%;
-  padding: 50px 70px 70px 71px;
-  box-shadow: 10px 5px 5px black;
+.admin_id {
+    position: relative;
+    bottom: 1px;
+    font-size: .6em;
+    line-height: .6em;
+    vertical-align:super;
+    text-decoration:none;
+    color: #ff0000;
 }
 
-.login-form .form-group {
-  margin-bottom:10px;
-}
-.login-form{ text-align:center;}
-.forgot a {
-  color: var(--primary);
-  font-size: 14px;
-  text-decoration: underline;
-}
-.login-form  .btn.btn-primary {
-  background: #f0ad4e none repeat scroll 0 0;
-  border-color: #f0ad4e;
-  color: #ffffff;
-  font-size: 14px;
-  width: 100%;
-  height: 50px;
-  line-height: 50px;
-  padding: 0;
+.copyright {
+    font-size: .6em;
 }
 
-.login-form label {
-  font-size: 10px;
-  color: var(--primary);
-}
-.botto-text {
-  color: #ffffff;
-  font-size: 14px;
-  margin: auto;
-}
-.login-form .btn.btn-primary.reset {
-  background: #ff9900 none repeat scroll 0 0;
-}
-.back { text-align: left; margin-top:10px;}
-.back a {color: #444444; font-size: 13px;text-decoration: none;}
-
-.register-form .form-control::-moz-placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: rgb(179, 179, 179);
-  opacity: 1; /* Firefox */
+.question {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 3em;
+    font-weight: bold;
+    margin: 0 0 30px 0;
 }
 
-.register-form label {
-  color: rgb(0, 0, 0);
+.quest_input {
+    font-size: 1.5em;
 }
