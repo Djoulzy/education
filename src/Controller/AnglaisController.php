@@ -6,13 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 
-use Entity\Verbe;
+use App\Entity\Verbe;
+use App\Entity\Score;
 
 /**
  * @Route("/langues")
  */
 class AnglaisController extends GatewayController
 {
+    const NB_QUEST = 10;
     /**
      * @Route("/anglais", name="anglais_index")
      */
@@ -33,14 +35,14 @@ class AnglaisController extends GatewayController
     public function verbes(int $niveau)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        // $i = 0;
-        // while ($i<10) {
-        //     $rand = rand(0, 12);
-        //     if (isset($tmp[$rand])) continue;
-        //     $tmp[$rand] = $rand;
-        //     $i++;
-        // }
-        // dump($tmp);
+        $i = 0;
+        while ($i<10) {
+            $rand = rand(0, 12);
+            if (isset($tmp[$rand])) continue;
+            $tmp[$rand] = $rand;
+            $i++;
+        }
+        dump($tmp);
 
         $options = array(
             'controller_name' => 'AnglaisController',
@@ -50,6 +52,22 @@ class AnglaisController extends GatewayController
         );
 
         return $this->render('anglais/start.html.twig', $options);
+    }
+
+    private function saveContext($score)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $tmp = new Score;
+        $tmp->setPlayer($this->getUser());
+        $tmp->setDate(new \DateTime('NOW'));
+        $tmp->setGame(1);
+        $tmp->setValue($score);
+
+        jlog(var_export($this->getUser(), true));
+
+        $entityManager->persist($tmp);
+        $entityManager->flush();
     }
 
     /**
@@ -62,15 +80,16 @@ class AnglaisController extends GatewayController
         $game = $this->session->get($game_name);
 
         $step = $this->request->get('step');
-        jlog(var_export($step, true));
         if ($step == null) {
             if (!isset($game['step'])) {
                 $this->queryManager->setCatalog('build/data/anglais.ini');
                 $data = $this->queryManager->execRawQuery('getVerbesID', array('level' => $niveau));
+                dump($data);
                 $nb_verbs = count($data);
+                dump($nb_verbs);
                 $i = 0;
-                while ($i<10) {
-                    $rand = rand(0, $nb_verbs);
+                while ($i < self::NB_QUEST) {
+                    $rand = rand(0, $nb_verbs-1);
                     if (isset($tmp[$rand])) continue;
                     $tmp[$rand] = $rand;
                     $i++;
@@ -80,12 +99,13 @@ class AnglaisController extends GatewayController
                 $game['step'] = 1;
                 $game['reponses'] = array();
                 $game['results'] = array();
-                $game['points'] = 30;
+                $game['points'] = self::NB_QUEST * 3;
         
                 $this->session->set($game_name, $game);
             }
-            if ($game['step'] < 10) $verbe = $game['verbes'][$game['step']-1];
-            else $verbe = $game['verbes'][9];
+            jlog(var_export($game['step'], true));
+            if ($game['step'] < self::NB_QUEST) $verbe = $game['verbes'][$game['step']-1];
+            else $verbe = $game['verbes'][self::NB_QUEST-1];
             $options = array(
                 'controller_name' => 'AnglaisController',
                 'topmenu' => $this->menu->renderTopMenu('build/data/menus/home.ini'),
@@ -93,6 +113,7 @@ class AnglaisController extends GatewayController
                 'link' => 'langues/anglais/verbes/'.$niveau.'/run',
                 'redirect' => '/langues/anglais/verbes/'.$niveau.'/correction',
                 'step' => $game['step'],
+                'nb_quest' => self::NB_QUEST,
                 'niveau' => $niveau,
                 'verbe' => $verbe,
                 'results' => json_encode($game['results'])
@@ -113,10 +134,12 @@ class AnglaisController extends GatewayController
 
             $game['step'] += 1;
             $this->session->set($game_name, $game);
+            jlog(var_export($game['step'], true));
 
-            if ($game['step'] > 10) {
-                // $this->saveContext();
-                $tmp = array('verbe' => $game['verbes'][9], 'step' => $game['step'], 'results' => $game['results']);
+            if ($game['step'] > self::NB_QUEST) {
+                $pts = round($game['points'] / (self::NB_QUEST * 3)*100);
+                $this->saveContext($pts);
+                $tmp = array('verbe' => $game['verbes'][self::NB_QUEST-1], 'step' => $game['step'], 'results' => $game['results']);
             }
             else
                 $tmp = array('verbe' => $game['verbes'][$game['step']-1], 'step' => $game['step'], 'results' => $game['results']);
@@ -143,7 +166,7 @@ class AnglaisController extends GatewayController
             'niveau' => $niveau,
             'verbes' => $game['verbes'],
             'reponses' => $game['reponses'],
-            'note' => ($game['points']/3)*2
+            'note' => round($game['points'] / (self::NB_QUEST * 3)*20)
         );
 
         return $this->render('anglais/correction.html.twig', $options);

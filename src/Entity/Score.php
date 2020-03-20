@@ -11,7 +11,7 @@ class Score
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -31,6 +31,11 @@ class Score
      * @ORM\Column(type="integer")
      */
     private $game;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $value;
 
     public function getId(): ?int
     {
@@ -69,6 +74,18 @@ class Score
     public function setGame(int $game): self
     {
         $this->game = $game;
+
+        return $this;
+    }
+
+    public function getValue(): ?int
+    {
+        return $this->value;
+    }
+
+    public function setValue(int $value): self
+    {
+        $this->value = $value;
 
         return $this;
     }

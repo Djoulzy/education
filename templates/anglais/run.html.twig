@@ -54,6 +54,7 @@
 	$(document).ready(function()
 	{
         var step = {{ step }}
+        var nb_Quest = {{ nb_quest }}
         var results = JSON.parse('{{ results|raw }}')
         var submit_ok = false
         console.log(step)
@@ -83,7 +84,7 @@
             $("#prog_"+step).addClass("active")
             $("#prog_"+step).html('<i class="fas fa-arrow-up" style="font-size: 20px;"></i>')
 
-            if (step > 10) {
+            if (step > nb_Quest) {
                 submit_ok = true
                 $("#next").removeClass("btn-danger")
                 $("#next").addClass("btn-info")
@@ -106,7 +107,7 @@
         $("#next").click(function() {
             if (!submit_ok) return
 
-            if (step > 10) {
+            if (step > nb_Quest) {
                 window.location.href = "{{ redirect }}"
             }
             else {
@@ -118,7 +119,7 @@
                 }
 
                 $.when(ajaxDataLoader('{{ link }}', 'json', 'POST', postval)).done(function(data) {
-                    console.log(data)
+                    console.log(data.step)
                     $("#question").html(data.verbe.fr)
                     step = data.step
                     results = data.results
