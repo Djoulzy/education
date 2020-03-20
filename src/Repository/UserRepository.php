@@ -39,11 +39,11 @@ class UserRepository extends ServiceEntityRepository
     // COMMAND functions
     //////////////////////////////////////////////////////////
 
-    private function _createUsers($first, $last, $mail, $pass, $roles)
+    private function _createUsers($full, $nick, $mail, $pass, $roles)
     {
         $user = new User();
-        $user->setFirstname($first);
-        $user->setLastname($last);
+        $user->setFullname($full);
+        $user->setNickname($nick);
         $user->setEmail($mail);
         $user->setRoles($roles);
         $user->setPassword($this->encoder->encodePassword($user, $pass));
@@ -56,12 +56,12 @@ class UserRepository extends ServiceEntityRepository
 
     public function createAdmins()
     {
-        return $this->_createUsers('Jules', 'Marusi', 'j@b.fr', 'ok', ['ROLE_ADMIN']);
+        return $this->_createUsers('Jules Marusi', 'jules', 'j@b.fr', 'ok', ['ROLE_ADMIN']);
     }
 
-    public function createUser($lastname, $firstname, $username, $password)
+    public function createUser($full, $nick, $mail, $password)
     {
-        return $this->_createUsers($lastname, $firstname, $username, $password, ["ROLE_DEMO"]);
+        return $this->_createUsers($full, $nick, $mail, $password, ["ROLE_DEMO"]);
     }
 
     //////////////////////////////////////////////////////////

@@ -84,10 +84,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             if ($user->getDisabled()) {
                 throw new CustomUserMessageAuthenticationException('Your account is disabled.');
             }
-
-            if (!$this->CheckIP($credentials['ip'], $user->getIp())) {
-                throw new CustomUserMessageAuthenticationException('Your connection address is not allowed.');
-            }
         }
 
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);

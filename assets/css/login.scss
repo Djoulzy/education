@@ -70,9 +70,16 @@ body {
 	padding: 0;
 }
 
+.login-form a {
+	color: var(--primary);
+	font-size: 14px;
+	text-decoration: underline;
+	font-weight: bold;
+}
+
 .login-form label {
 	font-size: 10px;
-	color: var(--primary);
+	color: var(--primary) !important;
 }
 .botto-text {
 	color: #ffffff;

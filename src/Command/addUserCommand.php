@@ -44,19 +44,19 @@ class addUserCommand extends Command
     {
         $helper = $this->getHelper('question');
 
-        $lastname_ask = new Question("Nom : ");
-        $firstname_ask = new Question("Prénom : ");
-        $username_ask = new Question("Renseigner le mail d'autentification : ");
+        $fullname_ask = new Question("Nom Complet: ");
+        $nickname_ask = new Question("Surnom: ");
+        $mail_ask = new Question("Renseigner le mail d'autentification : ");
         $password_ask = new Question("Renseigner le mot de passe d'autentification : ");
         $password_ask->setHidden(true);
 
-        $lastname = $helper->ask($input, $output, $lastname_ask);
-        $firstname = $helper->ask($input, $output, $firstname_ask);
-        $username = $helper->ask($input, $output, $username_ask);
+        $fullname = $helper->ask($input, $output, $fullname_ask);
+        $nickname = $helper->ask($input, $output, $nickname_ask);
+        $mail = $helper->ask($input, $output, $mail_ask);
         $password = $helper->ask($input, $output, $password_ask);
 
         if ($username && $password) {
-            $this->user->createUser($lastname, $firstname, $username, $password);
+            $this->user->createUser($fullname, $nickname, $mail, $password);
         }
     }
 }

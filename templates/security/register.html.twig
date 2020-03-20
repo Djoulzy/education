@@ -1,0 +1,39 @@
+{% extends 'index.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <form class="login-form" method="post">
+
+        {% for message in app.flashes('danger') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('warning') %}
+            <div class="alert alert-warning">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('info') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <h1 class="h3 mb-3 font-weight-normal">Register</h1>
+        <label for="inputNomComplet" class="sr-only">Nom Complet</label>
+        <input type="text" name="fullname" id="inputNomComplet" class="form-control" placeholder="Nom Complet" required autofocus>
+        <label for="inputSurnaom" class="sr-only">Prénom / Surnom de l'élève</label>
+        <input type="text" name="nickname" id="inputSurnaom" class="form-control" placeholder="Prénom / Surnom de l'élève" required autofocus>
+        <label for="inputEmail" class="sr-only">Email d'un parent</label>
+        <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email d'un parent" required autofocus>
+        <label for="inputPassword" class="sr-only">Mot de passe</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <br/>
+        <button class="btn btn-lg btn-primary" type="submit">
+            Enregistrer
+        </button>
+
+    </form>
+{% endblock %}
