@@ -70,7 +70,7 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('app_register');
             }    
             catch(\Exception $e){
-                $this->addFlash('danger', 'Une erreur est survenue, veuillez réessayer ultérieurement.');
+                $this->addFlash('danger', 'Une erreur est survenue, veuillez réessayer ultérieurement.<br/>'.$e->getMessage());
                 return $this->redirectToRoute('app_register');
             }
 
@@ -79,11 +79,20 @@ class SecurityController extends AbstractController
             $message = (new \Swift_Message('Activation de votre compte'))
                 ->setFrom($_ENV['MAILER_SENDER'])
                 ->setTo($user->getEmail());
-            $content = $this->render('security/mailplain.html.twig', [
+            $content = $this->renderView('security/mailhtml.html.twig', [
                 'lien' => $url,
-            ])->getContent();
+                'passwd' => $request->request->get('password')
+            ]);
+            $content2 = $this->renderView('security/mailplain.html.twig', [
+                'lien' => $url,
+                'passwd' => $request->request->get('password')
+            ]);
+            // $message->setBody($content, 'text/html');
+            $message->setBody($content, 'text/plain');
+
             $message->setBody($content, 'text/html');
-                jlog($content);
+            $message->addPart($content2, 'text/plain');
+
             $mailer->send($message);
             
             $this->addFlash('info', 'Un mail vous a été envoyé pour activer votre compte.');
