@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello GatewayController!{% endblock %}
+{% block title %}Anglais{% endblock %}
     
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
@@ -26,10 +26,10 @@
 
     <div class="container" style="clear: both;">
     <div class="card">
-        <div class="card-header">Verbes Irréguliers niv. {{ niveau }}</div>
+        <div class="card-header">{{ game_name }}</div>
         <div class="card-body">
             <div class="row">
-                <div id="question" class="col-12 text-center question">{{ verbe['fr'] }}</div>
+                <div id="question" class="col-12 text-center question">{{ questions['fr'] }}</div>
             </div>
             <div class="row">
                 <div class="col-4 quest_input text-center">Infinitif<br/><input id="inf" class="reponses" type="text" value="" /></div>
@@ -120,7 +120,7 @@
 
                 $.when(ajaxDataLoader('{{ link }}', 'json', 'POST', postval)).done(function(data) {
                     console.log(data.step)
-                    $("#question").html(data.verbe.fr)
+                    $("#question").html(data.questions.fr)
                     step = data.step
                     results = data.results
 

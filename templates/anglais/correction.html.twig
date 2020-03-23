@@ -11,13 +11,13 @@
 
     <div class="container" style="clear: both;">
     <div class="card">
-        <div class="card-header">Verbes Irréguliers niv. {{ niveau }}</div>
+        <div class="card-header">{{ game_name }}</div>
         <div class="card-body">
             <div class="row">
                 <div id="question" class="col-12 text-center question">{{ note }} / 20</div>
             </div>
             <table class="table">
-                {% for verbe in verbes %}
+                {% for verbe in questions %}
                     <tr><td rowspan="2">{{ loop.index }}</td>
                         <td rowspan="2">{{ verbe.fr }}</td>
                         <td>{{ verbe.infinitif }}</td>
