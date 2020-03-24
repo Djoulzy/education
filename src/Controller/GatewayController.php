@@ -37,6 +37,7 @@ class GatewayController extends AbstractController
             3 => 'Math - Calcul - Additions',
             4 => 'Math - Calcul - Additions/Sosutractions simple',
             5 => 'Math - Calcul - Additions/Sosutractions',
+            6 => 'Math - Calcul - Multiplications',
         );
     }
 

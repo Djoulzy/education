@@ -54,7 +54,24 @@ class MathController extends GatewayController
             'link3' => '/math/calcul/add_sous/5/run'
         );
 
-        return $this->render('math/start.html.twig', $options);
+        return $this->render('math/addsous.html.twig', $options);
+    }
+
+    /**
+     * @Route("/calcul/mult", methods={"GET","POST"}, name="math_calc_mult")
+     */
+    public function mult()
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $options = array(
+            'controller_name' => 'AnglaisController',
+            'topmenu' => $this->menu->renderTopMenu('build/data/menus/home.ini'),
+            'sidemenu' => $this->menu->renderSideMenu('build/data/menus/ss_math_calcul.ini'),
+            'link1' => '/math/calcul/add_sous/6/run',
+        );
+
+        return $this->render('math/mult.html.twig', $options);
     }
 
     protected function initQuestions(int $game): array
@@ -92,6 +109,14 @@ class MathController extends GatewayController
                         $tmp[$i]['operation'] = $op1.' + '.$op2;
                         $tmp[$i]['res'] = $op1 + $op2;
                     }
+                }
+            break;
+            case 6:
+                for($i=0; $i<self::NB_QUEST; $i++) {
+                    $op1 = rand(2, 9);
+                    $op2 = rand(2, 9);
+                    $tmp[$i]['operation'] = $op1.' x '.$op2;
+                    $tmp[$i]['res'] = $op1 * $op2;
                 }
             break;
         }
