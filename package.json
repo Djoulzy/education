@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "dependencies": {
+    "@amcharts/amcharts4": "^4.9.10",
     "@fortawesome/fontawesome-free": "^5.12.1",
     "bootstrap": "^4.4.1",
     "bootstrap-toggle": "^2.2.2",

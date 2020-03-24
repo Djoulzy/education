@@ -110,3 +110,23 @@ div#Blackbee {
     );
     display: inline-block;
 }
+
+.chart-card {
+    margin-top: 10px;
+}
+
+.amcharts-amexport-item {
+    border: 2px solid #777;
+    background: var(--nav-bg) !important;
+}
+
+.amcharts-amexport-top .amcharts-amexport-item > .amcharts-amexport-menu {
+    top: -3px !important;
+    left: 2px
+}
+
+.dateLineFull {
+    height: 650px;
+    width: 100%;
+    color: #ffffff;
+}

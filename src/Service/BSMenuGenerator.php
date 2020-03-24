@@ -113,7 +113,7 @@ class BSMenuGenerator
             '.$user->getNickname().'
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/user_details">Détails</a>
+            <a class="dropdown-item" href="/user">Détails</a>
             <a class="dropdown-item" href="/logout">Déconnexion</a>
             </div>
             </li></ul>';

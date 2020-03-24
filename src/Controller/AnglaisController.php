@@ -47,7 +47,7 @@ class AnglaisController extends GatewayController
 
     protected function initQuestions(int $game): array
     {
-        $this->queryManager->setCatalog('build/data/anglais.ini');
+        $this->queryManager->setCatalog('build/data/queries.ini');
         $data = $this->queryManager->execRawQuery('getVerbesID', array('level' => $game));
         $nb_verbs = count($data);
         $i = 0;

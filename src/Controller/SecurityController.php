@@ -134,18 +134,4 @@ class SecurityController extends AbstractController
     {
         return $this->redirectToRoute('home');
     }
-
-    /**
-     * @Route("/user_details", name="app_user_details")
-     */
-    public function userDetails(TokenStorageInterface $tokenStorage, BSMenuGenerator $menu)
-    {
-        $user = $tokenStorage->getToken()->getUser();
-
-        return $this->render('security/details.html.twig', [
-            'controller_name' => 'SecurityController',
-            'topmenu' => $menu->renderTopMenu('build/data/menu.ini'),
-            'user' => $user
-        ]);
-    }
 }

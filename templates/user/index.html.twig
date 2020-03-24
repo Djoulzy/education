@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Progression{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
+{% block js_before %}
+    {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('chart') }}
+{% endblock %}
+
+{% block body %}
+    {{ widgets | raw }}
+{% endblock %}
