@@ -53,6 +53,7 @@ class UserController extends GatewayController
         $options = array(
             'controller_name' => 'UserController',
             'topmenu' => $this->menu->renderTopMenu('build/data/menus/home.ini'),
+            'sidemenu' => $this->menu->renderSideMenu('build/data/menus/ss_user.ini'),
             'widgets' => $widget
         );
 
