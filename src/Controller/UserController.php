@@ -30,6 +30,7 @@ class UserController extends GatewayController
         $this->queryManager->setCatalog('build/data/queries.ini');
 
         $params = array(
+            'user' => $this->getUser()->getId(),
         );
         $data = $this->queryManager->execRawQuery($query, $params);
 
