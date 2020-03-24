@@ -17,5 +17,6 @@ import '@fortawesome/fontawesome-free/js/all';
 import './theme_init.js';
 
 import './ajaxLoader.js';
+import './QuestTools.js';
 
 console.log('APP: Bootstrap & JQuery Loaded');

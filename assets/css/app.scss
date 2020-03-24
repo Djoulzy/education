@@ -59,8 +59,54 @@ div#Blackbee {
     font-size: 3em;
     font-weight: bold;
     margin: 0 0 30px 0;
+    display: inline-block;
+}
+
+.quest_input_large {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 38px;
+    font-weight: bold;
+    display: inline-block;
 }
 
 .quest_input {
+    font-family: "Courier New", Courier, monospace;
     font-size: 1.5em;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.countdown {
+    position:fixed;
+    padding: 5px 12px 5px 5px;
+    background: rgb(138, 138, 138);
+}
+
+.digit {
+    display:block;
+    margin: 5px 0 5px 5px;
+	width:1em;
+	background-color:#444;
+	border-radius:0.2em;
+	text-align:center;
+	color:#fff;
+    letter-spacing:-1px;
+
+    font-size: 40px;
+	box-shadow:1px 1px 1px rgba(4, 4, 4, 0.35);
+	
+	background-image: linear-gradient(bottom, #3A3A3A 50%, #444444 50%);
+	background-image: -o-linear-gradient(bottom, #3A3A3A 50%, #444444 50%);
+	background-image: -moz-linear-gradient(bottom, #3A3A3A 50%, #444444 50%);
+	background-image: -webkit-linear-gradient(bottom, #3A3A3A 50%, #444444 50%);
+	background-image: -ms-linear-gradient(bottom, #3A3A3A 50%, #444444 50%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.5, #3A3A3A),
+		color-stop(0.5, #444444)
+    );
+    display: inline-block;
 }

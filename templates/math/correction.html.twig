@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Math{% endblock %}
+    
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+{% block body %}
+    <br/>
+
+    <div class="container" style="clear: both;">
+    <div class="card">
+        <div class="card-header">{{ game_name }}</div>
+        <div class="card-body">
+            <div class="row">
+                <div id="question" class="col-12 text-center question">{{ note }} / 20</div>
+            </div>
+            <table class="table">
+                {% for operation in questions %}
+                    <tr><td rowspan="2">{{ loop.index }}</td>
+                        <td rowspan="2">{{ operation.operation }}</td>
+                        <td>{{ operation.res }}</td>
+                    </tr>
+                    <tr>
+                        <td {% if reponses[loop.index].res != operation.res %} style="color:red;" {% endif %}>{{ reponses[loop.index].res }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Math{% endblock %}
+    
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+{% block body %}
+    <br/>
+    <br/>
+
+    <div class="container"  style="clear: both;">
+        <div class="card">
+            <div class="card-header">Question</div>
+            <div class="card-body">
+                <a id="next" class="btn btn-primary" href="{{ link1 }}" role="button">Additions</a><br/>
+                <a id="next" class="btn btn-primary" href="{{ link2 }}" role="button">Additions et soustractions simples</a><br/>
+                <a id="next" class="btn btn-primary" href="{{ link3 }}" role="button">Additions et soustractions</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

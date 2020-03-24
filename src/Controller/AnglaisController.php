@@ -34,13 +34,6 @@ class AnglaisController extends GatewayController
     public function verbes(int $niveau)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        // $i = 0;
-        // while ($i<10) {
-        //     $rand = rand(0, 12);
-        //     if (isset($tmp[$rand])) continue;
-        //     $tmp[$rand] = $rand;
-        //     $i++;
-        // }
 
         $options = array(
             'controller_name' => 'AnglaisController',
@@ -61,7 +54,7 @@ class AnglaisController extends GatewayController
         while ($i < self::NB_QUEST) {
             $rand = rand(0, $nb_verbs-1);
             if (isset($tmp[$rand])) continue;
-            $tmp[$rand] = $rand;
+            $tmp[$rand] = $data[$rand]['id'];
             $i++;
         }
         $verbes_liste = join(',', $tmp);

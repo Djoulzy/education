@@ -34,6 +34,9 @@ class GatewayController extends AbstractController
         $this->games = array(
             1 => 'Anglais - Verbes irréguliers - niv1',
             2 => 'Anglais - Verbes irréguliers - niv2',
+            3 => 'Math - Calcul - Additions',
+            4 => 'Math - Calcul - Additions/Sosutractions simple',
+            5 => 'Math - Calcul - Additions/Sosutractions',
         );
     }
 
@@ -106,6 +109,7 @@ class GatewayController extends AbstractController
             $game['reponses'][$game['step']] = $this->storeAnswer();
 
             $lost = $this->computeLostPoints($game['questions'][$game['step']-1], $game['reponses'][$game['step']]);
+            jlog('points = '.$game['points'].' + ('.$lost.')');
             $game['points'] += $lost;
             $game['results'][$game['step']] = true;
             if ($lost < 0) $game['results'][$game['step']] = false;
@@ -141,6 +145,8 @@ class GatewayController extends AbstractController
             'reponses' => $game['reponses'],
             'note' => round(($game['points'] / $max_points)*20)
         );
+
+        $this->session->set('game_'.$game_num, null);
 
         return $this->render($template, $options);
     }
