@@ -41,7 +41,7 @@ class ToolsController extends AbstractController
      */
     public function sess()
     {
-        $data = $this->session->get('anglais_1');
+        $data = $this->session->all();
         return $this->render('admin/tools/index.html.twig', [
             'data' => $data,
             'topmenu' => $this->menu->renderTopMenu('build/data/menus/home.ini')

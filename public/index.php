@@ -6,9 +6,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 require dirname(__DIR__).'/config/bootstrap.php';
 
-function jlog($mess) {
+function jlog($mess, $export = true) {
     $fd = fopen("../var/log/jules.log", "a");
-    if (!fwrite($fd, $mess."\n"))
+    if ($export) fwrite($fd, var_export($mess, true)."\n");
+    else fwrite($fd, $mess."\n");
     fclose($fd);
 }
 

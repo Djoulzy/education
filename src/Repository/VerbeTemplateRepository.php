@@ -2,49 +2,47 @@
 
 namespace App\Repository;
 
-use App\Entity\Verbe;
+use App\Entity\VerbeTemplate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method Verbe|null find($id, $lockMode = null, $lockVersion = null)
- * @method Verbe|null findOneBy(array $criteria, array $orderBy = null)
- * @method Verbe[]    findAll()
- * @method Verbe[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method VerbeTemplate|null find($id, $lockMode = null, $lockVersion = null)
+ * @method VerbeTemplate|null findOneBy(array $criteria, array $orderBy = null)
+ * @method VerbeTemplate[]    findAll()
+ * @method VerbeTemplate[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class VerbeRepository extends ServiceEntityRepository
+class VerbeTemplateRepository extends ServiceEntityRepository
 {
     private $conn;
     private $manager;
 
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Verbe::class);
+        parent::__construct($registry, VerbeTemplate::class);
         $this->manager = $this->getEntityManager();
         $this->conn = $this->manager->getConnection();
     }
 
-    public function insert(string $lang, string $fr, string $inf, string $form1, string $form2, int $level)
+    public function insert(string $name, string $infinitif, array $data)
     {
         $values = array(
-            'lang' => $lang,
-            'fr' => $fr,
-            'infinitif' => $inf,
-            'form1' => $form1,
-            'form2' => $form2,
-            'level' => $level
+            'name' => $name,
+            'infinitive' => $infinitif,
+            'data' => json_encode($data)
         );
 
         try {
-            $this->conn->insert('verbe', $values);
+            $this->conn->insert('verbe_template', $values);
             return true;
         } catch(\Doctrine\DBAL\DBALException $e) {
             return false;
         }
     }
 
+
     // /**
-    //  * @return Verbe[] Returns an array of Verbe objects
+    //  * @return VerbeTemplate[] Returns an array of VerbeTemplate objects
     //  */
     /*
     public function findByExampleField($value)
@@ -61,7 +59,7 @@ class VerbeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Verbe
+    public function findOneBySomeField($value): ?VerbeTemplate
     {
         return $this->createQueryBuilder('v')
             ->andWhere('v.exampleField = :val')

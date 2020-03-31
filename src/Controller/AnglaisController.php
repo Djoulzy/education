@@ -48,7 +48,7 @@ class AnglaisController extends GatewayController
     protected function initQuestions(int $game): array
     {
         $this->queryManager->setCatalog('build/data/queries.ini');
-        $data = $this->queryManager->execRawQuery('getVerbesID', array('level' => $game));
+        $data = $this->queryManager->execRawQuery('getVerbesAnglaisID', array('level' => $game));
         $nb_verbs = count($data);
         $i = 0;
         while ($i < self::NB_QUEST) {
@@ -58,7 +58,7 @@ class AnglaisController extends GatewayController
             $i++;
         }
         $verbes_liste = join(',', $tmp);
-        return $this->queryManager->execRawQuery('getSelectedVerbes', array('verbes_liste' => $verbes_liste));
+        return $this->queryManager->execRawQuery('getSelectedEnVerbes', array('verbes_liste' => $verbes_liste));
     }
 
     protected function storeAnswer()

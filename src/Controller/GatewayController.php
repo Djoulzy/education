@@ -38,6 +38,9 @@ class GatewayController extends AbstractController
             4 => 'Math - Calcul - Additions/Sosutractions simple',
             5 => 'Math - Calcul - Additions/Sosutractions',
             6 => 'Math - Calcul - Multiplications',
+            10 => 'Francais - 1er Grp - Indicatif',
+            11 => 'Francais - Indicatif',
+            12 => 'Francais - Tout temps'
         );
     }
 

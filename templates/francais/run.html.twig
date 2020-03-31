@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Anglais{% endblock %}
+    
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+{% block body %}
+    <br/>
+    <br/>
+    <div class="progress_container">
+        <ul class="progressbar">
+            <li id="prog_1" class="active"><i class="fas fa-arrow-up"></i></li>
+            <li id="prog_2"><i class="fas fa-question" style="font-size: 20px;"></i></li>
+            <li id="prog_3"><i class="fas fa-question" style="font-size: 20px;"></i></li>
+            <li id="prog_4"><i class="fas fa-question" style="font-size: 20px;"></i></li>
+            <li id="prog_5"><i class="fas fa-question" style="font-size: 20px;"></i></li>
+        </ul>
+    </div>
+
+    <div class="container" style="clear: both;">
+    <div class="card">
+        <div class="card-header">{{ game_name }}</div>
+        <div class="card-body">
+            <div class="row">
+                <div id="question" class="col-12 text-center question">{{ questions['fr'] }} - {{ questions['temps'] }}</div>
+            </div>
+            <div class="row col-12">
+
+                <div class="col-3"></div>
+                <div class="col-6">
+                    <center>
+                    <table cellpadding="5px">
+                        <tr><td class="frConjTd">Je / J'</td>            <td class="frRepTd"><input id="rep" class="reponses" type="text" value="" /></td></tr>
+                        <tr><td class="frConjTd">Tu</td>            <td class="frRepTd"><input id="rep" class="reponses" type="text" value="" /></td></tr>
+                        <tr><td class="frConjTd">Il / Elle</td>     <td class="frRepTd"><input id="rep" class="reponses" type="text" value="" /></td></tr>
+                        <tr><td class="frConjTd">Nous</td>          <td class="frRepTd"><input id="rep" class="reponses" type="text" value="" /></td></tr>
+                        <tr><td class="frConjTd">Vous</td>          <td class="frRepTd"><input id="rep" class="reponses" type="text" value="" /></td></tr>
+                        <tr><td class="frConjTd">Ils / Elles</td>   <td class="frRepTd"><input id="rep" class="reponses" type="text" value="" /></td></tr>
+                    </table>
+                    </center>
+                </div>
+                <div class="col-3"></div>
+
+            </div>
+            <div class="row">
+                <div id="question" class="col-12 text-center">
+                    <br/><br/>
+                </div>
+            </div>
+            <div class="row">
+                <div id="question" class="col-12 text-center">
+                    <button id="next" class="btn btn-danger" type="button">Remplir chaque champ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+<script>
+	$(document).ready(function()
+	{
+        step = {{ step }}
+        nb_Quest = {{ nb_quest }}
+        results = JSON.parse('{{ results|raw }}')
+        runlink = '{{ link }}'
+        redirect = '{{ redirect }}'
+
+        window.init = function() {
+            submit_ok = false
+            $("#inf").val(''),
+            $("#pret").val(''),
+            $("#ps").val('')
+            $("#next").addClass("btn-danger")
+            $("#next").html("Remplir chaque champ")
+        }
+
+        window.updateQuestion = function(data) {
+            $("#question").html(data.questions.fr)
+        }
+    
+        window.getPostVal = function() {
+                var postval = {
+                    'step': step,
+                    'inf': $("#inf").val(),
+                    'pret': $("#pret").val(),
+                    'ps': $("#ps").val()
+                }
+            return postval
+        }
+
+        setProgress()
+    })
+</script>
+
+{% endblock %}

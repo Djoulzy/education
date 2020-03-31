@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Verbe
 {
     /**
-     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer")
      */
@@ -27,6 +26,7 @@ class Verbe
     private $fr;
 
     /**
+     * @ORM\Id()
      * @ORM\Column(type="string", length=50)
      */
     private $infinitif;
