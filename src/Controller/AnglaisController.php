@@ -39,6 +39,7 @@ class AnglaisController extends GatewayController
             'controller_name' => 'AnglaisController',
             'topmenu' => $this->menu->renderTopMenu('build/data/menus/home.ini'),
             'sidemenu' => $this->menu->renderSideMenu('build/data/menus/ss_anglais.ini'),
+            'titre' => $this->games[$niveau],
             'link' => '/langues/anglais/verbes/'.$niveau.'/run'
         );
 
