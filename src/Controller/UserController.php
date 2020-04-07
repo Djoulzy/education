@@ -48,7 +48,7 @@ class UserController extends GatewayController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $title = "Progression";
-        $widget = $chart->create('dateLine', 'getProgression', 'kelly', $title, 'dateLineFull', false, true);
+        $widget = $chart->create('dateLine', 'getProgression', 'kelly', $title, 'dateLineFull', true, true);
 
         $options = array(
             'controller_name' => 'UserController',

@@ -29,13 +29,8 @@ class dateLine extends common
 
 	private function newAxis($fulldate)
 	{
-        if (!$fulldate)
-            $tmp = '
-            chart_'.$this->graphName.'.dateFormatter.inputDateFormat = "MM-dd HH:m"
-        ';
-        else $tmp = '';
-
-        $tmp .= 'chart_'.$this->graphName.'.scrollbarY = new am4core.Scrollbar();
+        $tmp = 'chart_'.$this->graphName.'.scrollbarY = new am4core.Scrollbar();
+        chart_'.$this->graphName.'.dateFormatter.inputDateFormat = "yyyy-MM-dd HH:mm"
         chart_'.$this->graphName.'.scrollbarY.parent = chart_'.$this->graphName.'.leftAxesContainer;
         chart_'.$this->graphName.'.scrollbarY.toBack();
         chart_'.$this->graphName.'.scrollbarY.exportable = false
@@ -45,9 +40,11 @@ class dateLine extends common
         chart_'.$this->graphName.'.scrollbarX.exportable = false
 
         var dateAxis_'.$this->graphName.' = chart_'.$this->graphName.'.xAxes.push(new am4charts.DateAxis());
-        dateAxis_'.$this->graphName.'.renderer.minGridDistance = 50
+        // dateAxis_'.$this->graphName.'.renderer.minGridDistance = 50
         // dateAxis_'.$this->graphName.'.dateFormats.setKey("month", "MMMM");
         // dateAxis_'.$this->graphName.'.periodChangeDateFormats.setKey("month", "MMMM");
+        dateAxis_'.$this->graphName.'.baseInterval = { "timeUnit": "minute", "count": 1 } 
+        dateAxis_'.$this->graphName.'.tooltipDateFormat = "HH:mm, d MMMM";
         dateAxis_'.$this->graphName.'.renderer.grid.template.strokeOpacity = 1;
 
         var valueAxis_'.$this->graphName.' = chart_'.$this->graphName.'.yAxes.push(new am4charts.ValueAxis());
@@ -172,7 +169,7 @@ class dateLine extends common
             let series = new am4charts.LineSeries();
             series.dataFields.valueY = "s_"+serieName;
             series.dataFields.dateX = dateField;
-            series.tooltipText = "{valueY}";
+            series.tooltipText = "{dateX}:{valueY}";
             series.strokeWidth = 2;
 			series.minBulletDistance = 15;
 			series.name = serieName;
@@ -206,6 +203,7 @@ class dateLine extends common
         chart_'.$this->graphName.'.legend = new am4charts.Legend();
         chart_'.$this->graphName.'.dataSource.events.on("parseended", function(ev) {
             var data = ev.target.data;
+            console.log(data)
             if (ev.target.data.length == 0) {
                 chart_'.$this->graphName.'.closeAllPopups()
                 chart_'.$this->graphName.'.openPopup("Pas de données en base<br/>avec les filtres sélectionnés.")
@@ -240,11 +238,11 @@ class dateLine extends common
     public function getScript($theme, $css, $fulldate = false, $percent = false)
     {
 		$tmp = $theme;
-		$tmp .= $this->newChart();
+        $tmp .= $this->newChart();
+        $tmp .= $this->initSeries();
 		$tmp .= $this->setVal();
         $tmp .= $this->newAxis($fulldate);
         $tmp .= $this->addThemeSwitcher();
-        $tmp .= $this->initSeries();
 		return $tmp;
     }
 }
