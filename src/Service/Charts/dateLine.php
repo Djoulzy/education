@@ -21,16 +21,25 @@ class dateLine extends common
         // chart_'.$this->graphName.'.language.locale["_decimalSeparator"] = ",";
         // chart_'.$this->graphName.'.language.locale["_thousandSeparator"] = " ";
         ';
-
-        $chart .= $this->getExportMenu();
+        
+        // if ($this->isPercent) {
+        //     $chart .= '// Pourcentages
+        //     chart_'.$this->graphName.'.numberFormatter.numberFormat = "#\'%\'"; 
+        //     ';
+        // }
 
         return $chart;
 	}
 
 	private function newAxis($fulldate)
 	{
-        $tmp = 'chart_'.$this->graphName.'.scrollbarY = new am4core.Scrollbar();
-        chart_'.$this->graphName.'.dateFormatter.inputDateFormat = "yyyy-MM-dd HH:mm"
+        if (!$fulldate)
+            $tmp = '
+        chart_'.$this->graphName.'.dateFormatter.inputDateFormat = "MM-dd"
+        ';
+        else $tmp = '';
+
+        $tmp .= 'chart_'.$this->graphName.'.scrollbarY = new am4core.Scrollbar();
         chart_'.$this->graphName.'.scrollbarY.parent = chart_'.$this->graphName.'.leftAxesContainer;
         chart_'.$this->graphName.'.scrollbarY.toBack();
         chart_'.$this->graphName.'.scrollbarY.exportable = false
@@ -39,20 +48,19 @@ class dateLine extends common
         chart_'.$this->graphName.'.scrollbarX.parent = chart_'.$this->graphName.'.bottomAxesContainer;
         chart_'.$this->graphName.'.scrollbarX.exportable = false
 
-        var dateAxis_'.$this->graphName.' = chart_'.$this->graphName.'.xAxes.push(new am4charts.DateAxis());
-        // dateAxis_'.$this->graphName.'.renderer.minGridDistance = 50
+        var dateAxis_'.$this->graphName.' = chart_'.$this->graphName.'.xAxes.push(new am4charts.CategoryAxis());
+        dateAxis_'.$this->graphName.'.dataFields.category = "category";
+        dateAxis_'.$this->graphName.'.renderer.minGridDistance = 50
         // dateAxis_'.$this->graphName.'.dateFormats.setKey("month", "MMMM");
         // dateAxis_'.$this->graphName.'.periodChangeDateFormats.setKey("month", "MMMM");
-        dateAxis_'.$this->graphName.'.baseInterval = { "timeUnit": "minute", "count": 1 } 
-        dateAxis_'.$this->graphName.'.tooltipDateFormat = "HH:mm, d MMMM";
         dateAxis_'.$this->graphName.'.renderer.grid.template.strokeOpacity = 1;
 
         var valueAxis_'.$this->graphName.' = chart_'.$this->graphName.'.yAxes.push(new am4charts.ValueAxis());
         valueAxis_'.$this->graphName.'.renderer.grid.template.strokeOpacity = 1;
 
-		chart_'.$this->graphName.'.cursor = new am4charts.XYCursor();
-		chart_'.$this->graphName.'.cursor.behavior = "panXY";
-		chart_'.$this->graphName.'.cursor.xAxis = dateAxis_'.$this->graphName.';
+		// chart_'.$this->graphName.'.cursor = new am4charts.XYCursor();
+		// chart_'.$this->graphName.'.cursor.behavior = "panXY";
+		// chart_'.$this->graphName.'.cursor.xAxis = dateAxis_'.$this->graphName.';
         ';
         if ($this->isPercent) $tmp .= '
         valueAxis_'.$this->graphName.'.max = 100
@@ -165,32 +173,32 @@ class dateLine extends common
         return '
         var Series_'.$this->graphName.' = {};
 
-        function createSeriesDateLine(dateField, serieName) {
-            let series = new am4charts.LineSeries();
-            series.dataFields.valueY = "s_"+serieName;
-            series.dataFields.dateX = dateField;
-            series.tooltipText = "{dateX}:{valueY}";
-            series.strokeWidth = 2;
-			series.minBulletDistance = 15;
-			series.name = serieName;
+        function createSeriesDateLine(name) {
+            let new_series = new am4charts.LineSeries();
+            new_series.dataFields.valueY = name;
+            new_series.dataFields.categoryX = "category";
+            new_series.strokeWidth = 2;
+			// new_series.minBulletDistance = 15;
+			new_series.name = name;
 
-            series.tooltip.background.cornerRadius = 20;
-            series.tooltip.background.strokeOpacity = 0;
-            series.tooltip.pointerOrientation = "vertical";
-            series.tooltip.label.minWidth = 40;
-            series.tooltip.label.minHeight = 40;
-            series.tooltip.label.textAlign = "middle";
-            series.tooltip.label.textValign = "middle";
+            let bullet = new_series.bullets.push(new am4charts.CircleBullet());
+            // bullet.circle.strokeWidth = 2;
+            // bullet.circle.radius = 4;
+            // bullet.circle.fill = am4core.color("#fff");
 
-            var bullet = series.bullets.push(new am4charts.CircleBullet());
-            bullet.circle.strokeWidth = 2;
-            bullet.circle.radius = 4;
-            bullet.circle.fill = am4core.color("#fff");
-            
-            var bullethover = bullet.states.create("hover");
+            // new_series.tooltip.background.cornerRadius = 20;
+            // new_series.tooltip.background.strokeOpacity = 0;
+            // new_series.tooltip.pointerOrientation = "vertical";
+            // new_series.tooltip.label.minWidth = 40;
+            // new_series.tooltip.label.minHeight = 40;
+            // new_series.tooltip.label.textAlign = "middle";
+            // new_series.tooltip.label.textValign = "middle";
+            new_series.tooltipText = "{valueY}";
+
+            let bullethover = bullet.states.create("hover");
             bullethover.properties.scale = 1.3;
 
-            return series
+            return new_series
         }';
     }
 
@@ -202,23 +210,32 @@ class dateLine extends common
         chart_'.$this->graphName.'.dataSource.parser = new am4core.JSONParser();
         chart_'.$this->graphName.'.legend = new am4charts.Legend();
         chart_'.$this->graphName.'.dataSource.events.on("parseended", function(ev) {
-            var data = ev.target.data;
-            console.log(data)
-            if (ev.target.data.length == 0) {
+            var series_list = ev.target.data.series
+            var data = ev.target.data.values;
+
+            if (data.length == 0) {
                 chart_'.$this->graphName.'.closeAllPopups()
                 chart_'.$this->graphName.'.openPopup("Pas de données en base<br/>avec les filtres sélectionnés.")
             } else 
-            for (var i = 0; i < data.length; i++) {
-                for (var val in data[i]) {
-                    if (val == "date") continue
-                    serie_name = val.toString().split("_")
-                    if (!(val in Series_'.$this->graphName.')) {
-                        Series_'.$this->graphName.'[val] = createSeriesDateLine("date", serie_name[1])
-                        chart_'.$this->graphName.'.series.push(Series_'.$this->graphName.'[val])
-                        chart_'.$this->graphName.'.scrollbarX.series.push(Series_'.$this->graphName.'[val])
-                    }
-                }
-            }
+
+            ev.target.data = data
+            console.log(ev.target.data)
+            // for (var i = 0; i < data.length; i++) {
+            //     for (var val in data[i]) {
+            //         serie_name = val.toString().split("_")
+            //         if (!(val in Series_'.$this->graphName.')) {
+            //             Series_'.$this->graphName.'[val] = createSeriesDateLine("date", serie_name[1])
+            //             chart_'.$this->graphName.'.series.push(Series_'.$this->graphName.'[val])
+            //             chart_'.$this->graphName.'.scrollbarX.series.push(Series_'.$this->graphName.'[val])
+            //         }
+            //     }
+            // }
+            series_list.forEach(function(name) {
+                serie_name = name.toString().split("_")
+                Series_'.$this->graphName.'[name] = createSeriesDateLine(name)
+                chart_'.$this->graphName.'.series.push(Series_'.$this->graphName.'[name])
+                chart_'.$this->graphName.'.scrollbarX.series.push(Series_'.$this->graphName.'[name])
+            })
         });
 
         chart_'.$this->graphName.'.UpdateChart = function() {
@@ -238,11 +255,12 @@ class dateLine extends common
     public function getScript($theme, $css, $fulldate = false, $percent = false)
     {
 		$tmp = $theme;
-        $tmp .= $this->newChart();
+		$tmp .= $this->newChart();
+        $tmp .= $this->newAxis($fulldate);
         $tmp .= $this->initSeries();
 		$tmp .= $this->setVal();
-        $tmp .= $this->newAxis($fulldate);
         $tmp .= $this->addThemeSwitcher();
+
 		return $tmp;
     }
 }

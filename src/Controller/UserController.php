@@ -14,11 +14,19 @@ class UserController extends GatewayController
     {
         $php_values = array();
 		foreach($data as $vals) {
-			$php_values[$vals['date']]['date'] = $vals['date'];
-            $php_values[$vals['date']]['s_'.$vals['serie']] = $vals['value'];
+            // $php_values[$vals['date']]['date'] = $vals['date'];
+            $php_values[$vals['label']]['s_'.$vals['serie']] = $vals['value'];
+            $php_values[$vals['label']]['category'] = $vals['label'];
+            $series['s_'.$vals['serie']] = true;
         }
 
-        $vals = json_encode(array_values($php_values));
+        $res = array(
+            'series' => array_keys($series),
+            'values' => array_values($php_values)
+        );
+
+        $vals = json_encode($res);
+        // $vals = json_encode($php_values);
         return $vals;
     }
 

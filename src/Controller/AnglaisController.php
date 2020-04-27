@@ -52,6 +52,7 @@ class AnglaisController extends GatewayController
         $data = $this->queryManager->execRawQuery('getVerbesAnglaisID', array('level' => $game));
         $nb_verbs = count($data);
         $i = 0;
+        mt_srand(time(), MT_RAND_MT19937);
         while ($i < self::NB_QUEST) {
             $rand = rand(0, $nb_verbs-1);
             if (isset($tmp[$rand])) continue;
